@@ -5,7 +5,20 @@ bool is_fibonacci(int *ptr, int len, int stride) {
     ASSERT(len >= 3, "`len` should be at least 3");
     // TODO: 编写代码判断从 ptr 开始，每 stride 个元素取 1 个元素，组成长度为 n 的数列是否满足
     // arr[i + 2] = arr[i] + arr[i + 1]
-    return true;
+	int first_offset = 0, mid_offset = 0 + stride, last_offset = 0 + 2 * stride;
+	int end = 2;
+	while (end < len) {
+		// std::cout << "index "  << first_offset << ":" << ptr[first_offset] << std::endl;
+		if (ptr[last_offset] != ptr[first_offset] + ptr[mid_offset]) {
+			return false;
+		} else {
+			end += 1;
+			first_offset = mid_offset;
+			mid_offset = last_offset;
+			last_offset += stride;
+		}
+	}
+	return true;
 }
 
 // ---- 不要修改以下代码 ----
@@ -21,7 +34,8 @@ int main(int argc, char **argv) {
     ASSERT(!is_fibonacci(arr2    , sizeof(arr2) / sizeof(*arr2)    , 1),         "arr2 is not Fibonacci");
     ASSERT( is_fibonacci(arr2 + 2, 10                              , 2), "part of arr2 is Fibonacci"    );
     ASSERT( is_fibonacci(arr2 + 3,  9                              , 2), "part of arr2 is Fibonacci"    );
-    ASSERT(!is_fibonacci(arr2 + 3, 10                              , 2), "guard check"                  );
+   
+	ASSERT(!is_fibonacci(arr2 + 3, 10                              , 2), "guard check"                  );
     ASSERT(!is_fibonacci(arr2 + 1, 10                              , 2), "guard check"                  );
     // clang-format on
     return 0;
